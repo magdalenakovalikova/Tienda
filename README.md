@@ -55,7 +55,7 @@ dotnet test src/TiendaRopa.Tests
 ```
 
 ## 🔍 Example Unit Test
-Create a unit test for `ProductoService` in `TiendaRopa.Tests`:
+Create a unit test for `ProductService` in `TiendaRopa.Tests`:
 
 ```csharp
 using System;
@@ -68,21 +68,21 @@ using TiendaRopa.Application.Handlers;
 using TiendaRopa.Domain.Entities;
 using TiendaRopa.Domain.Interfaces;
 
-public class CrearProductoHandlerTests
+public class CrearProductHandlerTests
 {
     [Fact]
-    public async Task Handle_ShouldCreateProducto_WhenDataIsValid()
+    public async Task Handle_ShouldCreateProduct_WhenDataIsValid()
     {
         // Arrange
-        var repositoryMock = new Mock<IProductoRepository>();
-        var handler = new CrearProductoHandler(repositoryMock.Object);
-        var command = new CrearProductoCommand("Camiseta", 29.99m, "M", "Rojo");
+        var repositoryMock = new Mock<IProductRepository>();
+        var handler = new CrearProductHandler(repositoryMock.Object);
+        var command = new CrearProductCommand("Camiseta", 29.99m, "M", "Rojo");
 
         // Act
         var result = await handler.Handle(command, CancellationToken.None);
 
         // Assert
-        repositoryMock.Verify(r => r.AddAsync(It.IsAny<Producto>()), Times.Once);
+        repositoryMock.Verify(r => r.AddAsync(It.IsAny<Product>()), Times.Once);
         repositoryMock.Verify(r => r.SaveChangesAsync(), Times.Once);
         Assert.NotEqual(Guid.Empty, result);
     }
