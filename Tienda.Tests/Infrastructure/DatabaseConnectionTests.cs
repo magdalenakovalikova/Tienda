@@ -7,6 +7,7 @@ using Xunit;
 public class DatabaseConnectionTests
 {
     [Fact]
+    [Trait("Category", "Integration")]
     public void CanConnectToDatabase()
     {
         // Arrange
