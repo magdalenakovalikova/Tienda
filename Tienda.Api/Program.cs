@@ -3,15 +3,28 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using Tienda.Api.Models;
 using Tienda.Application;
+using Tienda.Application.Features.Products.MappingProfiles;
 using Tienda.Domain.Interfaces;
 using Tienda.Infrastructure.Repositories;
 using Tienda.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAutoMapper(typeof(ProductMappingProfile));
+
 // Register MediatR and scan all handlers from the Application layer
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AssemblyReference).Assembly));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder =>
+        {
+            builder.WithOrigins("https://localhost:7180")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
 
 // Add Controllers
 builder.Services.AddControllers();
@@ -43,7 +56,18 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", policy =>
+        policy.WithOrigins("https://localhost:7180") // Change to your Blazor WebAssembly URL
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
+
 var app = builder.Build();
+
+app.UseCors("AllowSpecificOrigin");
 
 app.UseHttpsRedirection();
 
