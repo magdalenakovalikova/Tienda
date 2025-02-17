@@ -1,8 +1,10 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using Tienda.Application.Features.Products.Commands;
+using Tienda.Application.Features.Products.Dtos;
 using Tienda.Application.Features.Products.Queries;
+using Tienda.Domain.Entities;
 
 namespace Tienda.Api.Controllers;
 [Route("api/[controller]")]
@@ -10,10 +12,12 @@ namespace Tienda.Api.Controllers;
 public class ProductsController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IMapper _mapper;
 
-    public ProductsController(IMediator mediator)
+    public ProductsController(IMediator mediator, IMapper mapper)
     {
         _mediator = mediator;
+        _mapper = mapper;
     }
 
     [HttpPost]
@@ -29,7 +33,7 @@ public class ProductsController : ControllerBase
         try
         {
             var product = await _mediator.Send(new GetProductByIdQuery(id));
-            return Ok(product);
+            return Ok(_mapper.Map<ProductDto>(product));
         }
         catch (Exception ex)
         {
@@ -42,7 +46,7 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var products = await _mediator.Send(new GetAllProductsQuery());
-        return Ok(products);
+        return Ok(_mapper.Map<IEnumerable<ProductDto>>(products).ToList());
     }
 
     [HttpPut]

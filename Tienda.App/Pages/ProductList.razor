@@ -1,0 +1,76 @@
+﻿@page "/products"
+@inject ProductService ProductService
+@using Tienda.App.Services
+@using Tienda.Shared.Models
+
+<PageTitle>Product List</PageTitle>
+
+<h3>Product List</h3>
+
+@if (products == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Size</th>
+                <th>Color</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.Price</td>
+                    <td>@product.Size</td>
+                    <td>@product.Color</td>
+                    <td>
+                        <button @onclick="() => EditProduct(product)">Edit</button>
+                        <button @onclick="() => DeleteProduct(product.Id)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>Add Product</h4>
+    <input @bind="newProduct.Name" placeholder="Name" />
+    <input @bind="newProduct.Price" type="number" placeholder="Price" />
+    <input @bind="newProduct.Size" placeholder="Size" />
+    <input @bind="newProduct.Color" placeholder="Color" />
+    <button @onclick="AddProduct">Add</button>
+}
+
+@code {
+    private List<ProductDto> products;
+    private ProductDto newProduct = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await ProductService.GetProducts();
+    }
+
+    private async Task AddProduct()
+    {
+        await ProductService.CreateProduct(newProduct);
+        products = await ProductService.GetProducts();
+    }
+
+    private async Task DeleteProduct(Guid id)
+    {
+        await ProductService.DeleteProduct(id);
+        products = await ProductService.GetProducts();
+    }
+
+    private void EditProduct(ProductDto product)
+    {
+        // Implement edit logic (open modal, etc.)
+    }
+}
