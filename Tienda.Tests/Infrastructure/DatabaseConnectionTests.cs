@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Tienda.Persistence;
-using Xunit;
 
+namespace Tienda.Tests.Infrastructure;
 public class DatabaseConnectionTests
 {
     [Fact]

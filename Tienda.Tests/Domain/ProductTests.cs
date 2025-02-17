@@ -1,8 +1,7 @@
-﻿using Xunit;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Tienda.Domain.Entities;
-using System;
 
+namespace Tienda.Tests.Domain;
 public class ProductTests
 {
     [Fact]

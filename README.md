@@ -1,4 +1,4 @@
-# TiendaRopa
+# Tienda
 # Clean Architecture in ASP.NET Core with EF Core & CQRS
 
 ## 📌 Overview
@@ -6,25 +6,25 @@ This repository demonstrates **Clean Architecture** in **ASP.NET Core** using **
 
 ## 🏗️ Project Structure
 ```plaintext
-- src/
-  - TiendaRopa.Api/           # UI Layer (ASP.NET Core API)
-  - TiendaRopa.Application/   # Application Layer (CQRS, Business Logic)
-  - TiendaRopa.Domain/        # Domain Layer (Entities, Interfaces, Business Rules)
-  - TiendaRopa.Infrastructure/ # Infrastructure Layer (EF Core, Repositories, External Services)
-  - TiendaRopa.Persistence/   # Persistence Layer (DB Context, Migrations)
-  - TiendaRopa.Tests/         # Unit and Integration Tests
+- 
+  - Tienda.Api/           # UI Layer (ASP.NET Core API)
+  - Tienda.Application/   # Application Layer (CQRS, Business Logic)
+  - Tienda.Domain/        # Domain Layer (Entities, Interfaces, Business Rules)
+  - Tienda.Infrastructure/ # Infrastructure Layer (EF Core, Repositories, External Services)
+  - Tienda.Persistence/   # Persistence Layer (DB Context, Migrations)
+  - Tienda.Tests/         # Unit and Integration Tests
 ```
 
 ## 🚀 Getting Started
 ### 1️⃣ Clone the Repository
 ```sh
 git clone <repository_url>
-cd TiendaRopa
+cd Tienda
 ```
 
 ### 2️⃣ Install Dependencies
 ```sh
-cd src/TiendaRopa.Infrastructure
+cd Tienda.Infrastructure
 # Install EF Core & other dependencies
 dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 dotnet add package MediatR.Extensions.Microsoft.DependencyInjection
@@ -34,13 +34,13 @@ dotnet add package AutoMapper.Extensions.Microsoft.DependencyInjection
 
 ### 3️⃣ Run Migrations & Database Setup
 ```sh
-dotnet ef migrations add InitialCreate --project src/TiendaRopa.Persistence
-dotnet ef database update --project src/TiendaRopa.Persistence
+dotnet ef migrations add InitialCreate --project Tienda.Persistence
+dotnet ef database update --project Tienda.Persistence
 ```
 
 ### 4️⃣ Run the Application
 ```sh
-dotnet run --project src/TiendaRopa.Api
+dotnet run --project Tienda.Api
 ```
 
 ## ✅ Features Implemented
@@ -51,11 +51,11 @@ dotnet run --project src/TiendaRopa.Api
 
 ## 🧪 Running Tests
 ```sh
-dotnet test src/TiendaRopa.Tests
+dotnet test Tienda.Tests
 ```
 
 ## 🔍 Example Unit Test
-Create a unit test for `ProductService` in `TiendaRopa.Tests`:
+Create a unit test for `ProductService` in `Tienda.Tests`:
 
 ```csharp
 using System;
@@ -63,10 +63,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 using Xunit;
-using TiendaRopa.Application.Commands;
-using TiendaRopa.Application.Handlers;
-using TiendaRopa.Domain.Entities;
-using TiendaRopa.Domain.Interfaces;
+using Tienda.Application.Commands;
+using Tienda.Application.Handlers;
+using Tienda.Domain.Entities;
+using Tienda.Domain.Interfaces;
 
 public class CrearProductHandlerTests
 {
