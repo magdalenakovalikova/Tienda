@@ -1,0 +1,81 @@
+﻿@page "/"
+
+@using System.Net.Http.Json
+@inject HttpClient Http
+@inject IJSRuntime JS
+
+<PageTitle>Home</PageTitle>
+
+<h1>Products</h1>
+
+@if (products == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <button @onclick="AddProduct">Add</button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Size</th>
+                <th>Color</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr>
+                    <td><input @bind="product.Name" /></td>
+                    <td><input type="number" @bind="product.Price" /></td>
+                    <td><input @bind="product.Size" /></td>
+                    <td><input @bind="product.Color" /></td>
+                    <td>
+                        <button @onclick="() => UpdateProduct(product)">Save</button>
+                        <button @onclick="() => DeleteProduct(product.Id)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Product>? products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await Http.GetFromJsonAsync<List<Product>>("http://localhost:5297/api/Products");
+    }
+
+    private async Task AddProduct()
+    {
+        var newProduct = new Product { Id = Guid.NewGuid(), Name = "", Price = 0, Size = "", Color = "" };
+        products?.Add(newProduct);
+        await Http.PostAsJsonAsync("http://localhost:5297/api/Products", newProduct);
+    }
+
+    private async Task UpdateProduct(Product product)
+    {
+        await Http.PutAsJsonAsync($"http://localhost:5297/api/Products/{product.Id}", product);
+    }
+
+    private async Task DeleteProduct(Guid id)
+    {
+        await JS.InvokeVoidAsync("logToConsole", $"Deleting product with ID: {id}");
+        products?.Remove(products.First(p => p.Id == id));
+        await Http.DeleteAsync($"http://localhost:5297/api/Products/{id}");
+    }
+
+    public class Product
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+        public string Size { get; set; } = string.Empty;
+        public string Color { get; set; } = string.Empty;
+    }
+}
