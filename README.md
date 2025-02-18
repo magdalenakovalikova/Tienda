@@ -20,7 +20,7 @@ This repository demonstrates **Clean Architecture** in **ASP.NET Core** using **
 ## 🚀 Getting Started
 ### 1️⃣ Clone the Repository
 ```sh
-git clone <repository_url>
+git clone https://github.com/magdalenakovalikova/Tienda.git
 cd Tienda
 ```
 
