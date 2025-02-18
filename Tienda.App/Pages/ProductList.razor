@@ -3,7 +3,7 @@
 @using Tienda.App.Services
 @using Tienda.Shared.Models
 
-<PageTitle>Product List</PageTitle>
+@* <PageTitle>Product List</PageTitle> *@
 
 <h3>Product List</h3>
 
@@ -26,16 +26,27 @@ else
         <tbody>
             @foreach (var product in products)
             {
-                <tr>
+                <tr style="display: @(editingProductIds.Contains(product.Id) ? "none" : "table-row")">
                     <td>@product.Name</td>
                     <td>@product.Price</td>
                     <td>@product.Size</td>
                     <td>@product.Color</td>
                     <td>
-                        <button @onclick="() => EditProduct(product)">Edit</button>
+                        <button @onclick="() => ToggleEditing(product.Id)">Edit</button>
                         <button @onclick="() => DeleteProduct(product.Id)">Delete</button>
                     </td>
                 </tr>
+                <tr style="display: @(editingProductIds.Contains(product.Id) ? "table-row" : "none")">
+                    <td><input @bind="product.Name" /></td>
+                    <td><input type="number" @bind="product.Price" /></td>
+                    <td><input @bind="product.Size" /></td>
+                    <td><input @bind="product.Color" /></td>
+                    <td>
+                        <button @onclick="() => UpdateProduct(product)">Save</button>
+                        @* <button @onclick="() => DeleteProduct(product.Id)">Delete</button> *@
+                    </td>
+                </tr>
+
             }
         </tbody>
     </table>
@@ -49,28 +60,44 @@ else
 }
 
 @code {
-    private List<ProductDto> products;
+    private List<ProductDto> products = [];
     private ProductDto newProduct = new();
 
     protected override async Task OnInitializedAsync()
-    {
-        products = await ProductService.GetProducts();
+    {     
+        products = await ProductService.GetProducts() ?? [];
+    }
+    
+    private HashSet<Guid> editingProductIds = new();
+
+    private void ToggleEditing(Guid id){
+        @* editingProductIds.Clear(); *@
+        if (editingProductIds.Contains(id))
+            editingProductIds.Remove(id);
+        else
+            editingProductIds.Add(id);
     }
 
     private async Task AddProduct()
     {
-        await ProductService.CreateProduct(newProduct);
-        products = await ProductService.GetProducts();
+        await ProductService.CreateProduct(newProduct);     
+        products = await ProductService.GetProducts() ?? [];
     }
 
     private async Task DeleteProduct(Guid id)
     {
         await ProductService.DeleteProduct(id);
-        products = await ProductService.GetProducts();
+        products = await ProductService.GetProducts() ?? [];
     }
 
-    private void EditProduct(ProductDto product)
+    private async Task UpdateProduct(ProductDto product)
     {
-        // Implement edit logic (open modal, etc.)
+        Console.WriteLine(product);
+
+        await ProductService.UpdateProduct(product);
+        
+        products = await ProductService.GetProducts() ?? [];
+
+        ToggleEditing(product.Id);
     }
 }

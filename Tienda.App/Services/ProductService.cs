@@ -29,9 +29,9 @@ public class ProductService
         await _http.PostAsJsonAsync("api/products", product);
     }
 
-    public async Task UpdateProduct(Guid id, ProductDto product)
+    public async Task UpdateProduct(ProductDto product)
     {
-        await _http.PutAsJsonAsync($"api/products/{id}", product);
+        await _http.PutAsJsonAsync("api/products", product);
     }
 
     public async Task DeleteProduct(Guid id) =>
