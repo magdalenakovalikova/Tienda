@@ -18,10 +18,10 @@ public class ProductService
         _http.BaseAddress = new Uri(baseAddress);
     }
 
-    public async Task<List<ProductDto>> GetProducts() =>
+    public async Task<List<ProductDto>?> GetProducts() =>
         await _http.GetFromJsonAsync<List<ProductDto>>("api/products");
 
-    public async Task<ProductDto> GetProductById(Guid id) =>
+    public async Task<ProductDto?> GetProductById(Guid id) =>
         await _http.GetFromJsonAsync<ProductDto>($"api/products/{id}");
 
     public async Task CreateProduct(ProductDto product)

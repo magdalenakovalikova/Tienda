@@ -1,4 +1,4 @@
-﻿@page "/products"
+﻿@* @page "/products" *@
 @inject ProductService ProductService
 @using Tienda.App.Services
 @using Tienda.Shared.Models
@@ -13,7 +13,7 @@
 }
 else
 {
-    <table>
+    <table class="table">
         <thead>
             <tr>
                 <th>Name</th>
