@@ -40,7 +40,8 @@ dotnet ef database update --project Tienda.Persistence
 
 ### 4️⃣ Run the Application
 ```sh
-dotnet run --project Tienda.Api
+dotnet run --launch-profile "Tienda.Api" --project Tienda.Api/Tienda.Api.csproj
+dotnet run --launch-profile "Tienda.App" --project Tienda.App/Tienda.App.csproj
 ```
 
 ## ✅ Features Implemented
