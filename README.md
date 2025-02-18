@@ -8,10 +8,12 @@ This repository demonstrates **Clean Architecture** in **ASP.NET Core** using **
 ```plaintext
 - 
   - Tienda.Api/           # UI Layer (ASP.NET Core API)
+  - Tienda.App/           # Blazor WebAssembly SPA that consumes the API
   - Tienda.Application/   # Application Layer (CQRS, Business Logic)
   - Tienda.Domain/        # Domain Layer (Entities, Interfaces, Business Rules)
   - Tienda.Infrastructure/ # Infrastructure Layer (EF Core, Repositories, External Services)
   - Tienda.Persistence/   # Persistence Layer (DB Context, Migrations)
+  - Tienda.Shared/        # Shared Library (for Models)
   - Tienda.Tests/         # Unit and Integration Tests
 ```
 
